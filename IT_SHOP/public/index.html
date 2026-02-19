@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IoT WIKI</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+
+/* ===============================
+   ROOT VARIABLES
+================================ */
+:root{
+--primary:#00f5ff;
+--secondary:#7c3aed;
+--bg:#0f172a;
+--card:#1e293b;
+--text:#ffffff;
+--glow:0 0 20px #00f5ff;
+}
+
+body.light{
+--bg:#eef3ff;
+--card:#ffffff;
+--text:#111;
+}
+
+body{
+margin:0;
+font-family:'Poppins',sans-serif;
+background:var(--bg);
+color:var(--text);
+transition:0.4s;
+overflow-x:hidden;
+}
+
+/* ===============================
+   CANVAS BACKGROUND
+================================ */
+canvas{
+position:fixed;
+top:0;
+left:0;
+z-index:-1;
+}
+
+/* ===============================
+   HEADER
+================================ */
+header{
+position:fixed;
+top:0;
+left:0;
+right:0;
+padding:20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:rgba(0,0,0,0.4);
+backdrop-filter:blur(10px);
+z-index:1000;
+}
+
+header h1{
+  margin:0;
+  font-weight:800;
+  background:linear-gradient(90deg,var(--primary),var(--secondary));
+  background-clip: text;          /* สำหรับมาตรฐาน */
+  -webkit-background-clip: text;  /* สำหรับ Chrome / Safari */
+  color: transparent;
+}
+
+
+.theme-btn{
+padding:8px 18px;
+border:none;
+border-radius:30px;
+cursor:pointer;
+font-weight:bold;
+}
+
+/* ===============================
+   MAIN
+================================ */
+main{
+padding:120px 40px 60px 40px;
+max-width:1500px;
+margin:auto;
+}
+
+/* SEARCH */
+.search-box{
+margin-bottom:30px;
+}
+
+.search-box input{
+width:100%;
+padding:14px;
+border-radius:30px;
+border:none;
+outline:none;
+}
+
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:25px;
+}
+
+/* CARD */
+.card{
+background:var(--card);
+border-radius:20px;
+padding:20px;
+box-shadow:0 10px 40px rgba(0,0,0,0.4);
+transition:0.4s;
+cursor:pointer;
+position:relative;
+overflow:hidden;
+}
+
+.card:hover{
+transform:translateY(-12px) scale(1.03);
+box-shadow:var(--glow);
+}
+
+.card img{
+width:100%;
+height:180px;
+object-fit:cover;
+border-radius:15px;
+}
+
+.card h3{
+margin:15px 0 10px;
+}
+
+.detail{
+max-height:0;
+overflow:hidden;
+transition:0.5s;
+font-size:14px;
+}
+
+.card.active .detail{
+max-height:200px;
+margin-top:10px;
+}
+
+/* BACK TO TOP */
+#topBtn{
+position:fixed;
+bottom:30px;
+right:30px;
+padding:12px 15px;
+border-radius:50%;
+border:none;
+cursor:pointer;
+background:var(--secondary);
+color:white;
+display:none;
+}
+
+/* RESPONSIVE */
+@media(max-width:800px){
+main{
+padding:120px 20px;
+}
+}
+
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<header>
+<h1>IoT WIKI</h1>
+<button class="theme-btn" onclick="toggleTheme()">Toggle Theme</button>
+</header>
+
+<main>
+
+<div class="search-box">
+<input type="text" id="searchInput" placeholder="Search device...">
+</div>
+
+<section>
+<h2>🔵 MCU Boards (20)</h2>
+<div class="grid">
+<!-- ================= MCU CARDS ================= -->
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://upload.wikimedia.org/wikipedia/commons/3/38/Arduino_Uno_-_R3.jpg">
+<h3>Arduino Uno</h3>
+<p>บอร์ดยอดนิยมสำหรับผู้เริ่มต้น</p>
+<div class="detail">
+ATmega328P<br>
+5V / USB<br>
+เหมาะกับการเรียนรู้พื้นฐาน
+</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtYrysyVzx1ISEo78yCwCeyIAPVq7dzUTBcA&s">
+<h3>Arduino Nano</h3>
+<p>ขนาดเล็ก ประหยัดพื้นที่</p>
+<div class="detail">
+ATmega328P<br>
+5V / Mini USB<br>
+งานฝังตัว
+</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://www.imiconsystem.com/wp-content/uploads/2023/01/esp32-devkit-v1-1-3.jpg">
+<h3>ESP32</h3>
+<p>WiFi + Bluetooth</p>
+<div class="detail">
+Dual Core<br>
+3.3V<br>
+IoT ประสิทธิภาพสูง
+</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://inwfile.com/s-cq/ic82fu.jpg">
+<h3>ESP8266</h3>
+<p>WiFi IoT ราคาประหยัด</p>
+<div class="detail">
+3.3V<br>
+GPIO หลายขา<br>
+เหมาะกับ IoT
+</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://www.imiconsystem.com/wp-content/uploads/2022/02/20211112_095855.jpg">
+<h3>Wemos D1 Mini</h3>
+<p>ESP8266 ขนาดเล็ก</p>
+<div class="detail">
+3.3V<br>
+WiFi Built-in<br>
+โปรเจคจิ๋ว
+</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOGvUx6ut9nYkA-G-bjMCzflNIBhs93E269g&s">
+<h3>Raspberry Pi Pico</h3>
+<p>RP2040 แรงจัด</p>
+<div class="detail">
+Dual Core<br>
+MicroPython<br>
+3.3V Logic
+</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://deepbluembedded.com/wp-content/uploads/2020/06/STM32F103-Blue-Pill.jpg">
+<h3>STM32 Blue Pill</h3>
+<p>ARM Cortex-M3</p>
+<div class="detail">
+3.3V<br>
+ประสิทธิภาพสูง<br>
+ใช้ในอุตสาหกรรม
+</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://inwfile.com/s-o/oxcu8j.jpg">
+<h3>Teensy 4.0</h3>
+<p>แรงมาก ขนาดเล็ก</p>
+<div class="detail">
+600 MHz<br>
+USB High Speed<br>
+งาน Audio / AI
+</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/6450/ESP32-CAM-2MB.jpg">
+<h3>ESP32-CAM</h3>
+<p>มีกล้องในตัว</p>
+<div class="detail">
+WiFi + Camera<br>
+5V<br>
+CCTV IoT
+</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://inwfile.com/s-o/zjturj.jpg">
+<h3>Arduino Mega</h3>
+<p>GPIO เยอะมาก</p>
+<div class="detail">
+ATmega2560<br>
+54 GPIO<br>
+โปรเจคใหญ่
+</div>
+</div>
+
+<!-- ===== เพิ่ม MCU ต่อให้ครบ 20 ===== -->
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1bvImwB0MwuvOjysWcrwZh38sOdcku2tdCw&s">
+<h3>BeagleBone Black</h3>
+<p>Linux Board</p>
+<div class="detail">
+ARM Cortex-A8<br>
+Debian Linux
+</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://cdn.webshopapp.com/shops/346407/files/488508450/1500x1500x2/esp32-s3-n16r8-devboard-16mb-flash-8mb-psram-iot-d.jpg">
+<h3>ESP32-S3</h3>
+<p>AI & USB</p>
+<div class="detail">
+AI Acceleration<br>
+USB Native
+</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://hobbycomponents.com/1431-large_default/arduino-compatible-r3-leonardo.jpg">
+<h3>Arduino Leonardo</h3>
+<p>USB HID</p>
+<div class="detail">
+Keyboard / Mouse<br>
+USB Native
+</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://cz.lnwfile.com/3duu0d.webp">
+<h3>Arduino Micro</h3>
+<p>ขนาดเล็ก</p>
+<div class="detail">
+ATmega32U4<br>
+USB HID
+</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeK6sj65dIq_k45AEcL0sD4VqiMmMyKURzig&s">
+<h3>Seeeduino XIAO</h3>
+<p>จิ๋วแต่แรง</p>
+<div class="detail">
+SAMD21<br>
+Ultra Compact
+</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://upload.wikimedia.org/wikipedia/commons/1/15/Embedded_World_2014_Intel_Galileo_01.jpg">
+<h3>Intel Galileo</h3>
+<p>Board ระดับ Embedded</p>
+<div class="detail">
+x86<br>
+Linux Support
+</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://th.element14.com/productimages/large/en_GB/3648876-40.jpg">
+<h3>STM32 Nucleo</h3>
+<p>Development Board</p>
+<div class="detail">
+ARM Cortex-M4<br>
+Professional
+</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://mm.digikey.com/Volume0/opasdata/d220001/medias/images/531/MFG_MSP-EXP430F5529LP.jpg">
+<h3>TI LaunchPad</h3>
+<p>Texas Instruments</p>
+<div class="detail">
+Low Power MCU<br>
+Industrial
+</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://cdn.sparkfun.com/r/600-600/assets/parts/1/1/3/2/8/13774-01.jpg">
+<h3>Particle Photon</h3>
+<p>Cloud IoT</p>
+<div class="detail">
+WiFi Cloud<br>
+IoT Platform
+</div>
+</div>
+
+</div>
+</section>
+<!-- ================= SENSOR SECTION ================= -->
+<section>
+<h2>🟢 Sensors (20)</h2>
+<div class="grid">
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://media.rs-online.com/Y2153181-01.jpg">
+<h3>Ultrasonic HC-SR04</h3>
+<p>วัดระยะทางด้วยเสียง</p>
+<div class="detail">VCC, GND, Trig, Echo</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://th.sz-kuongshun.com/Content/upload/201884835/201811131511263384442.jpg">
+<h3>DHT11</h3>
+<p>อุณหภูมิ / ความชื้น</p>
+<div class="detail">VCC, GND, DATA</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYGp9Z32w1fcIexyKIjS1h97AZd47JyAWFmw&s">
+<h3>PIR Motion</h3>
+<p>ตรวจจับการเคลื่อนไหว</p>
+<div class="detail">VCC, GND, OUT</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://electronics.ma/wp-content/uploads/2025/06/IR-infrared-obstacle-avoidance.jpg">
+<h3>IR Sensor</h3>
+<p>ตรวจจับวัตถุ</p>
+<div class="detail">VCC, GND, OUT</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVuGyZJbf96_bTEFal3fuSiwXlHwNRvYBL1g&s">
+<h3>LDR</h3>
+<p>ตรวจจับแสง</p>
+<div class="detail">ใช้กับ Analog Pin</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://ai.thestempedia.com/wp-content/uploads/2022/07/MQ-2-Gas-Sensor-2.jpg">
+<h3>MQ-2 Gas</h3>
+<p>ตรวจจับแก๊ส</p>
+<div class="detail">VCC, GND, AO</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://inwfile.com/s-fa/qiwxre.jpg">
+<h3>Soil Moisture</h3>
+<p>ความชื้นดิน</p>
+<div class="detail">VCC, GND, AO</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://th.sz-kuongshun.com/Content/upload/201884835/201811051417285425999.png">
+<h3>BMP280</h3>
+<p>ความดันอากาศ</p>
+<div class="detail">I2C / SPI</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRT_1Yyrg7sQv8dR71iopTB91PTGBSgCMy_eA&s">
+<h3>Flame Sensor</h3>
+<p>ตรวจจับไฟ</p>
+<div class="detail">VCC, GND, OUT</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://inwfile.com/s-fl/xguab6.jpg">
+<h3>Rain Sensor</h3>
+<p>ตรวจจับฝน</p>
+<div class="detail">VCC, GND, AO</div>
+</div>
+
+<!-- เพิ่มให้ครบ 20 -->
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://components101.com/sites/default/files/components/MPU6050-Module.jpg">
+<h3>MPU6050</h3>
+<p>Gyro + Accel</p>
+<div class="detail">I2C Sensor</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8eSd-elPKqI3CW41ytqS8fYABag7v_4QDEw&s">
+<h3>MAX30100</h3>
+<p>Heart Rate</p>
+<div class="detail">I2C</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://www.electronicwings.com/storage/PlatformSection/TopicContent/158/description/Color%20Sensor%20TCS3200.png">
+<h3>TCS3200</h3>
+<p>Color Sensor</p>
+<div class="detail">Digital Output</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://projects.arduinocontent.cc/cover-images/a401061f-9807-4cc7-8b83-ea7d898bb8f5.blob">
+<h3>Touch Sensor</h3>
+<p>สัมผัส</p>
+<div class="detail">Digital Signal</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://inwfile.com/s-fa/u4skz1.jpg">
+<h3>Sound Sensor</h3>
+<p>เสียง</p>
+<div class="detail">Analog</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://inwfile.com/s-o/lmh7hb.jpg">
+<h3>Water Level</h3>
+<p>ระดับน้ำ</p>
+<div class="detail">Analog</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://gh.lnwfile.com/_/gh/_raw/ld/ow/u6.jpg">
+<h3>GPS Module</h3>
+<p>พิกัดตำแหน่ง</p>
+<div class="detail">UART</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://inwfile.com/s-o/k6xejr.jpg">
+<h3>DS18B20</h3>
+<p>อุณหภูมิ</p>
+<div class="detail">OneWire</div>
+</div>
+
+<div class="card" onclick="toggleCard(this)">
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfdpR3AYa03mKfBWwuvPxRiWgxWZM4_5SLhw&s">
+<h3>UV Sensor</h3>
+<p>รังสี UV</p>
+<div class="detail">Analog</div>
+</div>
+
+</div>
+</section>
+
+</main>
+
+<button id="topBtn" onclick="topFunction()">↑</button>
+
+<footer>
+<h2>สมาชิก : กิติศักดิ์ สายน้อย 46376 อัครพล ไชยคำ 46771 ณภัสกร สุขมาก 46332 นายนราวิชญ์ ทิดมนตรี 46471</h2>
+</footer>
+
+<script>
+/* ===============================
+   CARD TOGGLE
+================================ */
+function toggleCard(card){
+card.classList.toggle("active");
+}
+
+/* ===============================
+   SEARCH
+================================ */
+document.getElementById("searchInput").addEventListener("keyup",function(){
+let q=this.value.toLowerCase();
+document.querySelectorAll(".card").forEach(c=>{
+c.style.display=c.innerText.toLowerCase().includes(q)?"block":"none";
+});
+});
+
+/* ===============================
+   THEME
+================================ */
+function toggleTheme(){
+document.body.classList.toggle("light");
+localStorage.setItem("theme",document.body.classList.contains("light")?"light":"dark");
+}
+
+if(localStorage.getItem("theme")==="light"){
+document.body.classList.add("light");
+}
+
+/* ===============================
+   BACK TO TOP
+================================ */
+let btn=document.getElementById("topBtn");
+window.onscroll=()=>{
+btn.style.display=document.documentElement.scrollTop>300?"block":"none";
+};
+function topFunction(){
+window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/* ===============================
+   PARTICLE CURSOR EFFECT
+================================ */
+const canvas=document.getElementById("bg");
+const ctx=canvas.getContext("2d");
+canvas.width=innerWidth;
+canvas.height=innerHeight;
+
+let particles=[];
+window.onmousemove=e=>{
+for(let i=0;i<3;i++){
+particles.push({
+x:e.clientX,
+y:e.clientY,
+vx:(Math.random()-0.5)*2,
+vy:(Math.random()-0.5)*2,
+life:60
+});
+}
+};
+
+function animate(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+particles.forEach((p,i)=>{
+p.x+=p.vx;
+p.y+=p.vy;
+p.life--;
+ctx.beginPath();
+ctx.arc(p.x,p.y,2,0,Math.PI*2);
+ctx.fillStyle="rgba(0,245,255,0.7)";
+ctx.fill();
+if(p.life<=0)particles.splice(i,1);
+});
+requestAnimationFrame(animate);
+}
+animate();
+
+window.onresize=()=>{
+canvas.width=innerWidth;
+canvas.height=innerHeight;
+};
+</script>
+
+</body>
+</html>
