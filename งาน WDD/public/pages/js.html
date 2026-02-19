@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kitisak saynoy 46376</title>
+</head>
+<body>
+    <div id="tbl-mul">
+    </div>
+    <script>
+        let num1= Number(prompt("กรอกตัวเลขที่1"));
+        let num2= Number(prompt("กรอกตัวเลขที่2"));
+        alert(`${num1 + num2}`)
+         let num = Number(prompt("กรุณากรอกแม่สูตรคูณ"))
+         let result = document.querySelector("#tbl-mul");
+        for (let i = 0; i <= 12; i++){
+            result.innerHTML += `<p>${num} * ${i} = ${num * i}<p>`;
+
+        }
+        document.querySelector("#tbl-mul").innerHTML = num;
+        document.getElementById("tbl-mul").innerHTML = num;
+    </script>
+        
+</body>
+</html>
